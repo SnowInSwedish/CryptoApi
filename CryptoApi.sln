@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36717.8 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoApi", "CryptoApi\CryptoApi.csproj", "{C26C9784-EA5E-49D9-923F-B7B1722851E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoApi.Tests", "CryptoApi.Tests\CryptoApi.Tests.csproj", "{66E7C920-A48F-4A7C-9E7D-62BB0F75D50E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C26C9784-EA5E-49D9-923F-B7B1722851E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C26C9784-EA5E-49D9-923F-B7B1722851E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C26C9784-EA5E-49D9-923F-B7B1722851E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E7C920-A48F-4A7C-9E7D-62BB0F75D50E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E7C920-A48F-4A7C-9E7D-62BB0F75D50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E7C920-A48F-4A7C-9E7D-62BB0F75D50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E7C920-A48F-4A7C-9E7D-62BB0F75D50E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

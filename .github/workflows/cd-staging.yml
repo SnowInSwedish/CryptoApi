@@ -1,0 +1,34 @@
+name: CD - Deploy to Staging
+
+on:
+  push:
+    branches:
+      - Dev
+  pull_request:
+    types: [closed]
+    branches:
+      - Dev
+
+jobs:
+  deploy:
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*' '*bin/*' '*obj/*'
+      
+    - name: Deploy to Elastic Beanstalk Staging
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: crypto-api
+        environment_name: Crypto-api-staging
+        version_label: staging-${{ github.run_number }}
+        region: eu-north-1
+        deployment_package: deploy.zip

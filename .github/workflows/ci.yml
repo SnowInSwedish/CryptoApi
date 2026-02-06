@@ -1,0 +1,68 @@
+name: CI - Build, Test & Docker
+
+on:
+  pull_request:
+    branches:
+      - Dev
+      - main
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore CryptoApi.sln
+      
+    - name: Build
+      run: dotnet build CryptoApi.sln --configuration Release --no-restore
+      
+    - name: Run tests
+      run: dotnet test CryptoApi.sln --configuration Release --no-build --verbosity normal
+      
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: '**/TestResults/**/*.trx'
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        load: true
+        tags: crypto-api:test
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+    - name: Test Docker image
+      run: |
+        docker run -d -p 8080:8080 --name crypto-api-test crypto-api:test
+        sleep 10
+        curl -f http://localhost:8080/api/crypto/health || exit 1
+        docker stop crypto-api-test

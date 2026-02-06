@@ -1,0 +1,51 @@
+name: CD - Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Run tests
+      run: |
+        dotnet restore CryptoApi.sln
+        dotnet build CryptoApi.sln --configuration Release
+        dotnet test CryptoApi.sln --configuration Release --no-build
+        
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*' '*bin/*' '*obj/*'
+      
+    - name: Deploy to Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: crypto-api
+        environment_name: Crypto-api-env
+        version_label: v${{ github.run_number }}
+        region: eu-north-1
+        deployment_package: deploy.zip
+        wait_for_deployment: true
+        
+    - name: Verify deployment
+      run: |
+        echo "Deployment completed!"
+        echo "Version: v${{ github.run_number }}"

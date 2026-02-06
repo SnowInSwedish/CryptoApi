@@ -6,7 +6,7 @@ WORKDIR /src
 COPY ["CryptoApi/CryptoApi.csproj", "CryptoApi/"]
 RUN dotnet restore "CryptoApi/CryptoApi.csproj"
 
-# Kopiera k‰llkod
+# Kopiera k√§llkod
 COPY . .
 
 # Bygg
@@ -29,15 +29,12 @@ USER appuser
 COPY --from=publish /app/publish .
 
 # Exponera port
-EXPOSE 8080
+EXPOSE 80
 
 # Environment
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS=http://+:80
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/api/crypto/health || exit 1
 
 # Starta
 ENTRYPOINT ["dotnet", "CryptoApi.dll"]

@@ -1,9 +1,9 @@
 name: CD - Deploy to Staging
 
 on:
-  push:
-    branches:
-      - Dev
+  #push:
+    #branches:
+      #- Dev
   pull_request:
     types: [closed]
     branches:

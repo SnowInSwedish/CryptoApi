@@ -59,6 +59,7 @@ jobs:
         tags: crypto-api:test
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        progress: plain
         
     - name: Test Docker image
       run: |

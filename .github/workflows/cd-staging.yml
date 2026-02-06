@@ -28,7 +28,7 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: crypto-api
-        environment_name: crypto-api-staging
+        environment_name: Crypto-api-staging
         version_label: staging-${{ github.run_number }}
         region: eu-north-1
         deployment_package: deploy.zip

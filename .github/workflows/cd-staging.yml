@@ -1,13 +1,19 @@
-name: CD - Deploy to Staging (Elastic Beanstalk)
+name: CD - Deploy to Staging
 
 on:
   push:
     branches:
-      - development
+      - Dev
+  pull_request:
+    types: [closed]
+    branches:
+      - Dev
 
 jobs:
-  deploy-staging:
+  deploy:
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
+
     
     steps:
     - name: Checkout code

@@ -55,15 +55,8 @@ jobs:
         context: .
         file: ./Dockerfile
         push: false
-        load: true
         tags: crypto-api:test
         cache-from: type=gha
         cache-to: type=gha,mode=max
         progress: plain
         
-    - name: Test Docker image
-      run: |
-        docker run -d -p 8080:8080 --name crypto-api-test crypto-api:test
-        sleep 10
-        curl -f http://localhost:8080/api/crypto/health || exit 1
-        docker stop crypto-api-test

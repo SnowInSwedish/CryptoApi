@@ -2,11 +2,7 @@ using CryptoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Konfigurera Kestrel för Docker
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(8080);
-});
+
 
 // Add services
 builder.Services.AddControllers();

@@ -35,9 +35,6 @@ EXPOSE 80
 ENV ASPNETCORE_URLS=http://+:80
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:80/api/crypto/health || exit 1
 
 # Starta
 ENTRYPOINT ["dotnet", "CryptoApi.dll"]
